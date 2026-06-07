@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace CarBuilding.View
 {
@@ -11,6 +12,7 @@ namespace CarBuilding.View
         public AuthWindow()
         {
             InitializeComponent();
+            LoginBox.Focus();
         }
         private void Login(object sender, RoutedEventArgs e)
         {
@@ -26,9 +28,8 @@ namespace CarBuilding.View
                 MessageBox.Show("Введите пароль");
                 return;
             }
-            var user = Core.Context.Users.FirstOrDefault(u => u.Login == login &&
-           u.Password == password);
-            if (user == null)
+            var user = Core.Context.Users.FirstOrDefault(u => u.Login == login);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
                 MessageBox.Show("Неверный логин или пароль");
                 return;
@@ -58,14 +59,57 @@ namespace CarBuilding.View
                 MessageBox.Show("Пароли не совпадают");
                 return;
             }
+            if (Core.Context.Users.Any(u => u.Login == login))
+            {
+                MessageBox.Show("Пользователь с таким логином уже существует");
+                return;
+            }
+
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
             var newUser = new Users
             {
                 Login = login,
-                Password = password,
+                Password = hashedPassword,
             };
             Core.Context.Users.Add(newUser);
             Core.Context.SaveChanges();
             MessageBox.Show("Вы успешно зарегистрированы!");
+        }
+        private void RegLoginBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                RegPasswordBox.Focus();
+            }
+        }
+        private void RegPasswordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                ConfirmPasswordBox.Focus();
+            }
+        }
+        private void ConfirmPasswordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Register(sender, new RoutedEventArgs());
+            }
+        }
+            private void LoginBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                LoginPasswordBox.Focus();
+            }
+        }
+        private void LoginPasswordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Login(sender, new RoutedEventArgs());
+            }
         }
     }
 }
