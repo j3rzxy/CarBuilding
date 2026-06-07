@@ -15,19 +15,17 @@
 
                     <TextBlock Text="Логин" Foreground="#555555" Margin="0,0,0,5" />
                     <TextBox x:Name="LoginBox"
-                             KeyDown="LoginBox_KeyDown"
+                             KeyDown="MoveToNextElement_KeyDown"
                              Height="30" Padding="5" Margin="0,0,0,15" 
                              BorderBrush="#CCCCCC" BorderThickness="1"/>
 
                     <TextBlock Text="Пароль" Foreground="#555555" Margin="0,0,0,5" />
                     <PasswordBox x:Name="LoginPasswordBox"
-                                 KeyDown="LoginPasswordBox_KeyDown"
+                                 KeyDown="MoveToNextElement_KeyDown"
                                  Height="30" Padding="5" Margin="0,0,0,30" 
                                  BorderBrush="#CCCCCC" BorderThickness="1"/>
 
                     <Button Content="ВОЙТИ"
-                            Command="{Binding LoginCommand}"
-                            CommandParameter="{Binding ElementName=LoginPasswordBox}"
                             Height="35" 
                             Background="#0078D7" 
                             Foreground="White" 
@@ -42,19 +40,19 @@
 
                     <TextBlock Text="Придумайте логин" Foreground="#555555" Margin="0,0,0,5" />
                     <TextBox x:Name="RegLoginBox"
-                             KeyDown="RegLoginBox_KeyDown"
+                             KeyDown="MoveToNextElement_KeyDown"
                              Height="30" Padding="5" Margin="0,0,0,15" 
                              BorderBrush="#CCCCCC" BorderThickness="1"/>
 
                     <TextBlock Text="Пароль" Foreground="#555555" Margin="0,0,0,5" />
                     <PasswordBox x:Name="RegPasswordBox"
-                                 KeyDown="RegPasswordBox_KeyDown"
+                                 KeyDown="MoveToNextElement_KeyDown"
                                  Height="30" Padding="5" Margin="0,0,0,15" 
                                  BorderBrush="#CCCCCC" BorderThickness="1"/>
 
                     <TextBlock Text="Повторите пароль" Foreground="#555555" Margin="0,0,0,5" />
                     <PasswordBox x:Name="ConfirmPasswordBox"
-                                 KeyDown="ConfirmPasswordBox_KeyDown"
+                                 KeyDown="MoveToNextElement_KeyDown"
                                  Height="30" Padding="5" Margin="0,0,0,30" 
                                  BorderBrush="#CCCCCC" BorderThickness="1"/>
 

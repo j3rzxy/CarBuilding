@@ -76,39 +76,18 @@ namespace CarBuilding.View
             Core.Context.SaveChanges();
             MessageBox.Show("Вы успешно зарегистрированы!");
         }
-        private void RegLoginBox_KeyDown(object sender, KeyEventArgs e)
+        private void MoveToNextElement_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                RegPasswordBox.Focus();
-            }
-        }
-        private void RegPasswordBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                ConfirmPasswordBox.Focus();
-            }
-        }
-        private void ConfirmPasswordBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                Register(sender, new RoutedEventArgs());
-            }
-        }
-            private void LoginBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                LoginPasswordBox.Focus();
-            }
-        }
-        private void LoginPasswordBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                Login(sender, new RoutedEventArgs());
+                TraversalRequest request = new TraversalRequest(FocusNavigationDirection.Next);
+
+                UIElement elementWithFocus = Keyboard.FocusedElement as UIElement;
+
+                if (elementWithFocus != null)
+                {
+                    elementWithFocus.MoveFocus(request);
+                }
             }
         }
     }
