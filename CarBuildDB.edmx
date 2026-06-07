@@ -1,0 +1,497 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище CarBuildDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BuildParts">
+          <Key>
+            <PropertyRef Name="BuildID" />
+            <PropertyRef Name="PartID" />
+          </Key>
+          <Property Name="BuildID" Type="int" Nullable="false" />
+          <Property Name="PartID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Builds">
+          <Key>
+            <PropertyRef Name="BuildID" />
+          </Key>
+          <Property Name="BuildID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsPublic" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Characteristics">
+          <Key>
+            <PropertyRef Name="CharID" />
+          </Key>
+          <Property Name="CharID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Compability">
+          <Key>
+            <PropertyRef Name="BasePartID" />
+            <PropertyRef Name="CompPartID" />
+          </Key>
+          <Property Name="BasePartID" Type="int" Nullable="false" />
+          <Property Name="CompPartID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Parts">
+          <Key>
+            <PropertyRef Name="PartID" />
+          </Key>
+          <Property Name="PartID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PartSpecs">
+          <Key>
+            <PropertyRef Name="PartID" />
+            <PropertyRef Name="CharID" />
+          </Key>
+          <Property Name="PartID" Type="int" Nullable="false" />
+          <Property Name="CharID" Type="int" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BuildParts_Builds">
+          <End Role="Builds" Type="Self.Builds" Multiplicity="1" />
+          <End Role="BuildParts" Type="Self.BuildParts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Builds">
+              <PropertyRef Name="BuildID" />
+            </Principal>
+            <Dependent Role="BuildParts">
+              <PropertyRef Name="BuildID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BuildParts_Parts">
+          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
+          <End Role="BuildParts" Type="Self.BuildParts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parts">
+              <PropertyRef Name="PartID" />
+            </Principal>
+            <Dependent Role="BuildParts">
+              <PropertyRef Name="PartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Builds_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Builds" Type="Self.Builds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Builds">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Compability_Parts">
+          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
+          <End Role="Compability" Type="Self.Compability" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parts">
+              <PropertyRef Name="PartID" />
+            </Principal>
+            <Dependent Role="Compability">
+              <PropertyRef Name="BasePartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Compability_Parts1">
+          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
+          <End Role="Compability" Type="Self.Compability" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parts">
+              <PropertyRef Name="PartID" />
+            </Principal>
+            <Dependent Role="Compability">
+              <PropertyRef Name="CompPartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Parts_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="Parts" Type="Self.Parts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Parts">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PartSpecs_Characteristics">
+          <End Role="Characteristics" Type="Self.Characteristics" Multiplicity="1" />
+          <End Role="PartSpecs" Type="Self.PartSpecs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characteristics">
+              <PropertyRef Name="CharID" />
+            </Principal>
+            <Dependent Role="PartSpecs">
+              <PropertyRef Name="CharID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PartSpecs_Parts">
+          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
+          <End Role="PartSpecs" Type="Self.PartSpecs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parts">
+              <PropertyRef Name="PartID" />
+            </Principal>
+            <Dependent Role="PartSpecs">
+              <PropertyRef Name="PartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище CarBuildDBModelContainer">
+          <EntitySet Name="BuildParts" EntityType="Self.BuildParts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Builds" EntityType="Self.Builds" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Characteristics" EntityType="Self.Characteristics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Compability" EntityType="Self.Compability" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parts" EntityType="Self.Parts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PartSpecs" EntityType="Self.PartSpecs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BuildParts_Builds" Association="Self.FK_BuildParts_Builds">
+            <End Role="Builds" EntitySet="Builds" />
+            <End Role="BuildParts" EntitySet="BuildParts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuildParts_Parts" Association="Self.FK_BuildParts_Parts">
+            <End Role="Parts" EntitySet="Parts" />
+            <End Role="BuildParts" EntitySet="BuildParts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Builds_Users" Association="Self.FK_Builds_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Builds" EntitySet="Builds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Compability_Parts" Association="Self.FK_Compability_Parts">
+            <End Role="Parts" EntitySet="Parts" />
+            <End Role="Compability" EntitySet="Compability" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Compability_Parts1" Association="Self.FK_Compability_Parts1">
+            <End Role="Parts" EntitySet="Parts" />
+            <End Role="Compability" EntitySet="Compability" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Parts_Categories" Association="Self.FK_Parts_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Parts" EntitySet="Parts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PartSpecs_Characteristics" Association="Self.FK_PartSpecs_Characteristics">
+            <End Role="Characteristics" EntitySet="Characteristics" />
+            <End Role="PartSpecs" EntitySet="PartSpecs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PartSpecs_Parts" Association="Self.FK_PartSpecs_Parts">
+            <End Role="Parts" EntitySet="Parts" />
+            <End Role="PartSpecs" EntitySet="PartSpecs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CarBuildDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Builds">
+          <Key>
+            <PropertyRef Name="BuildID" />
+          </Key>
+          <Property Name="BuildID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsPublic" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Builds_Users" FromRole="Builds" ToRole="Users" />
+          <NavigationProperty Name="Parts" Relationship="Self.BuildParts" FromRole="Builds" ToRole="Parts" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Parts" Relationship="Self.FK_Parts_Categories" FromRole="Categories" ToRole="Parts" />
+        </EntityType>
+        <EntityType Name="Characteristics">
+          <Key>
+            <PropertyRef Name="CharID" />
+          </Key>
+          <Property Name="CharID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PartSpecs" Relationship="Self.FK_PartSpecs_Characteristics" FromRole="Characteristics" ToRole="PartSpecs" />
+        </EntityType>
+        <EntityType Name="Parts">
+          <Key>
+            <PropertyRef Name="PartID" />
+          </Key>
+          <Property Name="PartID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Categories" Relationship="Self.FK_Parts_Categories" FromRole="Parts" ToRole="Categories" />
+          <NavigationProperty Name="PartSpecs" Relationship="Self.FK_PartSpecs_Parts" FromRole="Parts" ToRole="PartSpecs" />
+          <NavigationProperty Name="Builds" Relationship="Self.BuildParts" FromRole="Parts" ToRole="Builds" />
+          <NavigationProperty Name="Parts1" Relationship="Self.Compability" FromRole="Parts" ToRole="Parts1" />
+          <NavigationProperty Name="Parts2" Relationship="Self.Compability" FromRole="Parts1" ToRole="Parts" />
+        </EntityType>
+        <EntityType Name="PartSpecs">
+          <Key>
+            <PropertyRef Name="PartID" />
+            <PropertyRef Name="CharID" />
+          </Key>
+          <Property Name="PartID" Type="Int32" Nullable="false" />
+          <Property Name="CharID" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Characteristics" Relationship="Self.FK_PartSpecs_Characteristics" FromRole="PartSpecs" ToRole="Characteristics" />
+          <NavigationProperty Name="Parts" Relationship="Self.FK_PartSpecs_Parts" FromRole="PartSpecs" ToRole="Parts" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Builds" Relationship="Self.FK_Builds_Users" FromRole="Users" ToRole="Builds" />
+        </EntityType>
+        <Association Name="FK_Builds_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Builds" Type="Self.Builds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Builds">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Parts_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="Parts" Type="Self.Parts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Parts">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PartSpecs_Characteristics">
+          <End Role="Characteristics" Type="Self.Characteristics" Multiplicity="1" />
+          <End Role="PartSpecs" Type="Self.PartSpecs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characteristics">
+              <PropertyRef Name="CharID" />
+            </Principal>
+            <Dependent Role="PartSpecs">
+              <PropertyRef Name="CharID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PartSpecs_Parts">
+          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
+          <End Role="PartSpecs" Type="Self.PartSpecs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parts">
+              <PropertyRef Name="PartID" />
+            </Principal>
+            <Dependent Role="PartSpecs">
+              <PropertyRef Name="PartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BuildParts">
+          <End Role="Builds" Type="Self.Builds" Multiplicity="*" />
+          <End Role="Parts" Type="Self.Parts" Multiplicity="*" />
+        </Association>
+        <Association Name="Compability">
+          <End Role="Parts" Type="Self.Parts" Multiplicity="*" />
+          <End Role="Parts1" Type="Self.Parts" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="CarBuildDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Builds" EntityType="Self.Builds" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" />
+          <EntitySet Name="Characteristics" EntityType="Self.Characteristics" />
+          <EntitySet Name="Parts" EntityType="Self.Parts" />
+          <EntitySet Name="PartSpecs" EntityType="Self.PartSpecs" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_Builds_Users" Association="Self.FK_Builds_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Builds" EntitySet="Builds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Parts_Categories" Association="Self.FK_Parts_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Parts" EntitySet="Parts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PartSpecs_Characteristics" Association="Self.FK_PartSpecs_Characteristics">
+            <End Role="Characteristics" EntitySet="Characteristics" />
+            <End Role="PartSpecs" EntitySet="PartSpecs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PartSpecs_Parts" Association="Self.FK_PartSpecs_Parts">
+            <End Role="Parts" EntitySet="Parts" />
+            <End Role="PartSpecs" EntitySet="PartSpecs" />
+          </AssociationSet>
+          <AssociationSet Name="BuildParts" Association="Self.BuildParts">
+            <End Role="Builds" EntitySet="Builds" />
+            <End Role="Parts" EntitySet="Parts" />
+          </AssociationSet>
+          <AssociationSet Name="Compability" Association="Self.Compability">
+            <End Role="Parts" EntitySet="Parts" />
+            <End Role="Parts1" EntitySet="Parts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище CarBuildDBModelContainer" CdmEntityContainer="CarBuildDBEntities">
+          <EntitySetMapping Name="Builds">
+            <EntityTypeMapping TypeName="CarBuildDBModel.Builds">
+              <MappingFragment StoreEntitySet="Builds">
+                <ScalarProperty Name="BuildID" ColumnName="BuildID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="CarBuildDBModel.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Characteristics">
+            <EntityTypeMapping TypeName="CarBuildDBModel.Characteristics">
+              <MappingFragment StoreEntitySet="Characteristics">
+                <ScalarProperty Name="CharID" ColumnName="CharID" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parts">
+            <EntityTypeMapping TypeName="CarBuildDBModel.Parts">
+              <MappingFragment StoreEntitySet="Parts">
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PartSpecs">
+            <EntityTypeMapping TypeName="CarBuildDBModel.PartSpecs">
+              <MappingFragment StoreEntitySet="PartSpecs">
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="CharID" ColumnName="CharID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CarBuildDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="CarBuildDBModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="BuildParts" TypeName="CarBuildDBModel.BuildParts" StoreEntitySet="BuildParts">
+            <EndProperty Name="Builds">
+              <ScalarProperty Name="BuildID" ColumnName="BuildID" />
+            </EndProperty>
+            <EndProperty Name="Parts">
+              <ScalarProperty Name="PartID" ColumnName="PartID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Compability" TypeName="CarBuildDBModel.Compability" StoreEntitySet="Compability">
+            <EndProperty Name="Parts">
+              <ScalarProperty Name="PartID" ColumnName="BasePartID" />
+            </EndProperty>
+            <EndProperty Name="Parts1">
+              <ScalarProperty Name="PartID" ColumnName="CompPartID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
